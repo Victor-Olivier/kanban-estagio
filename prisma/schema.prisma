@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./kanban.db"
+}
+
+model Board {
+  id      Int      @id @default(autoincrement())
+  name    String
+  columns Column[]
+}
+
+model Column {
+  id      Int     @id @default(autoincrement())
+  title   String
+  board   Board   @relation(fields: [boardId], references: [id])
+  boardId Int
+  cards   Card[]
+}
+
+model Card {
+  id        Int     @id @default(autoincrement())
+  content   String
+  column    Column  @relation(fields: [columnId], references: [id])
+  columnId  Int
+}
